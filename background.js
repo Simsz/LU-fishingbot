@@ -1,4 +1,4 @@
-
+// Background script for audio analysis and detection
 const Background = (function () {
   // Constants
   const SAMPLE_SIZE = 1024;
@@ -17,14 +17,12 @@ const Background = (function () {
   let fishTab;
   let inputBuffer = [];
 
-  // Function to log messages (can be toggled on/off)
   function logMessage(message) {
     if (DEBUG_MODE) {
       console.log(message);
     }
   }
 
-  // Function to fetch and decode audio
   async function fetchAndDecodeAudio() {
     const response = await fetch("cstrim.wav");
     const buffer = await response.arrayBuffer();
@@ -41,7 +39,6 @@ const Background = (function () {
     });
   }
 
-  // Function to start audio recording
   function startAudio() {
     logMessage("Fishing Bot - Started.");
     chrome.tabCapture.capture({ audio: true }, async function (stream) {
@@ -63,14 +60,14 @@ const Background = (function () {
     });
   }
 
-  // Function to stop audio recording
   function stopAudio() {
     logMessage("Fishing Bot - Stopped.");
     if (mediaRecorder) mediaRecorder.stop();
-    if (capturedStream) capturedStream.getTracks().forEach((track) => track.stop());
+    if (capturedStream)
+      capturedStream.getTracks().forEach((track) => track.stop());
   }
 
-  // Audio Logic
+  // Reset cooldown on keypress
   async function resetFlag(delay) {
     logMessage("Fishing Bot - Resetting Flag.");
     canPressKey = false;
@@ -78,6 +75,7 @@ const Background = (function () {
     canPressKey = true;
   }
 
+  //Normalize audio stream based on max buffer value
   function normalize(buffer) {
     let max = Math.abs(buffer[0]);
     for (let i = 1; i < buffer.length; i++) {
@@ -86,20 +84,20 @@ const Background = (function () {
         max = ABS_VALUE;
       }
     }
-  
+
     if (max === 0) return buffer;
-  
+
     for (let i = 0; i < buffer.length; i++) {
       buffer[i] = (buffer[i] / max) * SCALING_FACTOR;
     }
-  
+
     return buffer;
   }
 
-
+  //Match audio to the supplied audio clip
   function crossCorrelate(buffer1, buffer2) {
     let maxCorrelation = 0;
-  
+
     for (let lag = 0; lag <= buffer1.length - buffer2.length; lag++) {
       let correlation = 0;
       for (let i = 0; i < buffer2.length; i++) {
@@ -115,10 +113,9 @@ const Background = (function () {
     }
     return maxCorrelation > THRESHOLD;
   }
-  
+
   function analyze() {
     const BUFFER_LEN = analyzer.frequencyBinCount;
-    // Reuse this array to avoid unnecessary memory allocation
     const DATA_ARRAY = new Float32Array(BUFFER_LEN);
     analyzer.getFloatTimeDomainData(DATA_ARRAY);
 
@@ -128,7 +125,6 @@ const Background = (function () {
     requestAnimationFrame(analyze);
   }
 
-  // Separate function to process the data array
   function processDataArray(dataArray) {
     // Normalize and append the data
     const NORMALIZED_DATA = Array.from(dataArray).map((x) => x / MAX_INT_16);
@@ -146,16 +142,20 @@ const Background = (function () {
   function analyzeSegment(segment) {
     const NORMALIZED_INPUT_BUFFER = normalize(segment);
     const NORMALIZED_CUE_BUFFER = normalize(audioCueBuffer);
-    if (crossCorrelate(NORMALIZED_INPUT_BUFFER, NORMALIZED_CUE_BUFFER) && canPressKey) {
+    if (
+      crossCorrelate(NORMALIZED_INPUT_BUFFER, NORMALIZED_CUE_BUFFER) &&
+      canPressKey
+    ) {
       logMessage("Fishing Bot - Audio match, sending keypress");
       chrome.tabs.sendMessage(
         fishTab,
         { action: "sendKey", tab: fishTab },
         function (response) {
           if (chrome.runtime.lastError) {
-            // Handle the error
             console.error(chrome.runtime.lastError.message);
-            alert('Content Script unloaded. Please turn off bot, refresh tab and turn on bot.'); 
+            alert(
+              "Content Script unloaded. Please turn off bot, refresh tab and turn on bot."
+            );
           } else {
             logMessage("SendKey Response: " + response);
           }
@@ -164,17 +164,21 @@ const Background = (function () {
       resetFlag(1800);
     }
   }
-
   // Chrome runtime message listener
-  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.action === "log") logMessage("Content Script Output: " + request.message);
+  chrome.runtime.onMessage.addListener(function (
+    request,
+    sender,
+    sendResponse
+  ) {
+    if (request.action === "log")
+      logMessage("Content Script Output: " + request.message);
     if (request.action === "startAudio") startAudio();
     if (request.action === "stopAudio") stopAudio();
 
     sendResponse({ status: "ok" });
-    return true; // Keeps the message channel open for async operations
+    return true;
   });
 
-  // Public functions (if needed)
+  // Public functions (none needed currently)
   return {};
 })();
