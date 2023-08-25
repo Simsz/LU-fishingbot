@@ -1,27 +1,25 @@
 {
-    "name": "LU Fish Bot",
-    "version": "1.0",
-    "manifest_version": 2,
-    "permissions": ["activeTab", "tabs", "tabCapture", "notifications"],
-    "browser_action": {
-        "default_popup": "popup.html"
-    },
-    "commands": {
-      "_execute_browser_action": {
-        "suggested_key": {
-          "default": "Ctrl+Q"
-        },
-        "description": "Start the fishbot"
-      }
-    },
-    "content_scripts": [
-        {
-          "matches": ["<all_urls>"],
-          "js": ["content.js"]
-        }
-      ],
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
+  "name": "LU Fish Bot",
+  "version": "1.1",
+  "manifest_version": 2,
+  "permissions": ["activeTab", "tabs", "tabCapture", "notifications"],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "media/Icon16.png",
+    "32": "media/Icon32.png",
+    "48": "media/Icon48.png",
+    "128": "media/Icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }

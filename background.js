@@ -5,7 +5,7 @@ const Background = (function () {
   const THRESHOLD = 0.9; //Match Threshold
   const MAX_INT_16 = 32768;
   const SCALING_FACTOR = 10;
-  const DEBUG_MODE = true; // Set to true for debugging logs
+  const DEBUG_MODE = false; // Set to true for debugging logs
 
   // Private variables
   let mediaRecorder;
@@ -24,7 +24,7 @@ const Background = (function () {
   }
 
   async function fetchAndDecodeAudio() {
-    const response = await fetch("cstrim.wav");
+    const response = await fetch("media/cstrim.wav");
     const buffer = await response.arrayBuffer();
     const decodedAudio = await audioContext.decodeAudioData(buffer);
     audioCueBuffer = decodedAudio.getChannelData(0).slice(0, SAMPLE_SIZE);
