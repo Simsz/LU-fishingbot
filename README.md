@@ -1,20 +1,41 @@
-# LU-fishingbot
-Fishing bot for Local Universe
-- Uses simple cross correlation comparison of audio to detect when "FishOn" Audio Cue is being played
-- Automatically catches fish and then casts line again
+# 🎣 LU-FishingBot: A Fishing Bot for Local Universe
 
-How to use:
-- Start fishing on any planet
-- Click LU-FishingBot extension, click "Start"
+LU-FishingBot is a Chrome extension designed to automate fishing in the Local Universe game. It leverages audio cues to perform actions, making your fishing experience smooth and hands-free.
 
-How to stop:
-- Just click stop from inside the extension page, alternatively, closing the tab will also stop the capture and the bot
+---
 
-Info:
-- Bot doesn't like when other sounds are playing, disable the ambient music if present
+## 🌟 Features
 
-Bugs:
-- Open an issue report
+- **Audio Cue Detection**: Uses simple cross-correlation comparison of audio to detect when the "FishOn" audio cue is being played.
+- **Auto-Catch and Cast**: Automatically catches fish and casts the line again.
+
+---
+
+## 🚀 Getting Started
+
+### How to Use
+
+1. Start fishing on any planet in Local Universe.
+2. Click on the LU-FishingBot extension in your browser.
+3. Click the "Start" button to begin automated fishing.
+
+### How to Stop
+
+- Click the "Stop" button from inside the extension's popup window.
+- Alternatively, closing the tab will also stop the capture and deactivate the bot.
+
+---
+
+## ℹ️ Additional Information
+
+- **Sound Interference**: The bot may not perform well if other sounds are playing. It is recommended to disable ambient music if present.
+
+---
+
+## 🐞 Reporting Bugs
+
+If you encounter any issues, please open an issue report in the repository.
+
 
 ### Future Features
 - [x] Better UI
