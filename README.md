@@ -28,7 +28,7 @@ LU-FishingBot is a Chrome extension designed to automate fishing in the Local Un
 
 ## ℹ️ Additional Information
 
-- **Sound Interference**: The bot may not perform well if other sounds are playing. It is recommended to disable ambient music if present.
+- **Sound Interference**: The bot may not perform well if other sounds are playing on the fishing tab. It is recommended to disable ambient music if present (on the fishing tab, other tabs don't matter).
 
 ---
 
