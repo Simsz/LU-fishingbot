@@ -1,10 +1,12 @@
 {
-  "name": "LU Fish Bot",
-  "version": "1.1",
   "manifest_version": 2,
-  "permissions": ["activeTab", "tabs", "tabCapture", "notifications"],
+  "name": "LU Fishing Bot",
+  "version": "1.1",
+  "description": "Fishing bot for Local Universe. To get started, navigate to the page and open the Local Universe Extension then start fishing, then turn on bot.",
+  "permissions": ["activeTab", "tabs", "tabCapture", "storage", "notifications"],
   "browser_action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "LU Fishing Bot"
   },
   "icons": {
     "16": "media/Icon16.png",

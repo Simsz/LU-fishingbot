@@ -179,6 +179,19 @@ const Background = (function () {
     return true;
   });
 
+  // Listen for tab removal to clear tab-specific state and global state
+  chrome.tabs.onRemoved.addListener((tabId) => {
+    if (tabId === fishTab) {
+      chrome.browserAction.setBadgeText({});
+      chrome.browserAction.setBadgeText({});
+      chrome.storage.local.remove(`${tabId}-start`);
+      chrome.storage.local.remove(`${tabId}-stop`);
+      chrome.storage.sync.remove("start");
+      chrome.storage.sync.remove("stop");
+      stopAudio();
+    }
+  });
+
   // Public functions (none needed currently)
   return {};
 })();
